@@ -1,5 +1,4 @@
 from flask import Flask, jsonify
-from flask_restful import Resource, Api, reqparse
 import math
 
 app = Flask(__name__)
@@ -20,10 +19,14 @@ def numerical_integration_combined(lower, upper):
         result *= interval_width
         return result
 
-    for i in range(0, 7):
-        result = numerical_integration(lower, upper, 10**i)
-        print(f"Numerical integration result with {10**i} intervals: {result}")
+    results_dict = {}
 
+    for i in range(0, 7):
+        result = numerical_integration(float(lower), float(upper), 10**i)
+        results_dict[f"result_{10**i}_intervals"] = result
+
+    return jsonify(results_dict)
 
 if __name__ == '__main__':
     app.run()
+
